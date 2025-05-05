@@ -46,5 +46,9 @@ A Terraform module for deploying an Azure Virtual Network and subnets using the 
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_subnet_address_space"></a> [subnet\_address\_space](#output\_subnet\_address\_space) | A map of subnet names to their respective CIDR range, in the format:<pre>{<br/>  "SimpleSubnet"          = "10.99.0.0/26",<br/>  "DelegatedSubnet"       = "10.99.64.0/26",<br/>  "ServiceEndpointSubnet" = "10.99.128.0/26"<br/>}</pre> |
+| <a name="output_subnet_id"></a> [subnet\_id](#output\_subnet\_id) | A map of subnet names to their respective IDs, in the format:<pre>{<br/>  "SimpleSubnet"          = "/subscriptions/.../Microsoft.Network/virtualNetworks/vnet-example/subnets/SimpleSubnet",<br/>  "DelegatedSubnet"       = "/subscriptions/.../Microsoft.Network/virtualNetworks/vnet-example/subnets/DelegatedSubnet",<br/>  "ServiceEndpointSubnet" = "/subscriptions/.../Microsoft.Network/virtualNetworks/vnet-example/subnets/ServiceEndpointSubnet"<br/>}</pre> |
+| <a name="output_virtual_network_id"></a> [virtual\_network\_id](#output\_virtual\_network\_id) | The ID of the virtual network. |
 <!-- END_TF_DOCS -->
