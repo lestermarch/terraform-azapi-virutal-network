@@ -32,6 +32,7 @@ resource "azapi_resource" "subnet" {
   type = "Microsoft.Network/virtualNetworks/subnets@2024-05-01"
 
   name      = each.key
+  locks     = [azapi_resource.virtual_network.id]
   parent_id = azapi_resource.virtual_network.id
 
   body = {
