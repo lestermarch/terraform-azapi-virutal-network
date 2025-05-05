@@ -31,7 +31,7 @@ variables {
   ]
 }
 
-run "default" {
+run "plan" {
   command = plan
 
   # Virtual Network: Address Space (Variable Input)
