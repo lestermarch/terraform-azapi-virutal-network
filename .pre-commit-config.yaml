@@ -19,12 +19,12 @@ repos:
           - --hook-config=--parallelism-ci-cpu-cores=1
       - id: terraform_docs
         args:
-          - --args=--config=platform/.config/.terraform-docs.yaml
+          - --args=--config=.config/.terraform-docs.yaml
       - id: terraform_tflint
         args:
           - --hook-config=--parallelism-ci-cpu-cores=1
-          - --args=--config=__GIT_WORKING_DIR__/platform/.config/.tflint.hcl
+          - --args=--config=__GIT_WORKING_DIR__/.config/.tflint.hcl
       - id: terraform_checkov
         args:
           - --hook-config=--parallelism-ci-cpu-cores=1
-          - --args=--config=__GIT_WORKING_DIR__/platform/.config/.checkov.yaml
+          - --args=--config=__GIT_WORKING_DIR__/.config/.checkov.yaml
