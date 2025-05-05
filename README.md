@@ -1,5 +1,6 @@
-# terraform-azapi-virutal-network
-Terraform module for deploying an Azure Virtual Network using the AzAPI provider.
+# Azure Virtual Network (AzAPI)
+
+A Terraform module for deploying an Azure Virtual Network and subnets using the AzAPI provider.
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
