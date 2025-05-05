@@ -38,7 +38,7 @@ resource "azapi_resource" "subnet" {
     properties = {
       addressPrefix                     = each.value
       defaultOutboundAccess             = false
-      delegations                       = local.subnet_delegation[each.key]
+      delegations                       = try(local.subnet_delegation[each.key], [])
       privateEndpointNetworkPolicies    = local.subnet_network_policies[each.key].private_endpoint
       privateLinkServiceNetworkPolicies = local.subnet_network_policies[each.key].private_link_service
       serviceEndpoints                  = local.subnet_service_endpoints[each.key]
