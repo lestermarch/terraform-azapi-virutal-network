@@ -38,9 +38,10 @@ variable "subnets" {
       size = 26
     },
     {
-      name       = "DelegatedSubnet"
-      size       = 26
-      delegation = "Microsoft.ContainerInstance/containerGroups"
+      name           = "DelegatedSubnet"
+      size           = 26
+      delegation     = "Microsoft.ContainerInstance/containerGroups"
+      nat_gateway_id = "/subscriptions/.../providers/Microsoft.Network/natGateways/ng-example"
     },
     {
       name = "ServiceEndpointSubnet"
@@ -61,6 +62,7 @@ variable "subnets" {
     delegation                                   = optional(string)
     enable_private_endpoint_network_policies     = optional(bool, false)
     enable_private_link_service_network_policies = optional(bool, true)
+    nat_gateway_id                               = optional(string)
     service_endpoints                            = optional(list(string), [])
   }))
 }
