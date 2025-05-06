@@ -17,6 +17,7 @@ subnets = [
     size                                     = 26
     delegation                               = "Microsoft.ContainerInstance/containerGroups"
     enable_private_endpoint_network_policies = true
+    nat_gateway_id                           = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-mock/providers/Microsoft.Network/natGateways/ng-mock"
   },
   {
     name = "ServiceEndpointSubnet"

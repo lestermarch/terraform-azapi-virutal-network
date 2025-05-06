@@ -18,6 +18,7 @@ variables {
       size                                     = 26
       delegation                               = "Microsoft.ContainerInstance/containerGroups"
       enable_private_endpoint_network_policies = true
+      nat_gateway_id                           = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-mock/providers/Microsoft.Network/natGateways/ng-mock"
     },
     {
       name = "ServiceEndpointSubnet"
@@ -58,7 +59,7 @@ run "plan" {
     error_message = "The virtual network tags should include a \"CreatedBy\" key."
   }
 
-  # Virtual Network: Subnets: SimpleSubnet Name (Internal Logic)
+  # Virtual Network: Subnets: SimpleSubnet Name (Variable Input)
   assert {
     condition     = azapi_resource.subnet["SimpleSubnet"].name == "SimpleSubnet"
     error_message = "The first subnet should be named \"SimpleSubnet\"."
@@ -134,6 +135,12 @@ run "plan" {
   assert {
     condition     = azapi_resource.subnet["DelegatedSubnet"].body.properties.delegations[0].properties.serviceName == "Microsoft.ContainerInstance/containerGroups"
     error_message = "The second subnet's delegation service name should be \"Microsoft.ContainerInstance/containerGroups\"."
+  }
+
+  # Virtual Network: Subnets: DelegatedSubnet NAT Gateway ID (Internal Logic)
+  assert {
+    condition     = azapi_resource.subnet["DelegatedSubnet"].body.properties.natGateway.id == "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-mock/providers/Microsoft.Network/natGateways/ng-mock"
+    error_message = "The second subnet should have a NAT gateway ID of \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-mock/providers/Microsoft.Network/natGateways/ng-mock\"."
   }
 
   # Virtual Network: Subnets: DelegatedSubnet Private Endpoint Network Policies (Internal Logic)

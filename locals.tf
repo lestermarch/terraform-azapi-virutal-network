@@ -26,6 +26,14 @@ locals {
     ] if subnet.delegation != null
   }
 
+  # Create a data structure for subnet NAT gateway configuration as required by the Azure API
+  subnet_nat_gateway = {
+    for subnet in var.subnets :
+    subnet.name => {
+      id = subnet.nat_gateway_id
+    } if subnet.nat_gateway_id != null
+  }
+
   # Convert the subnet network policy boolean parameter values to valid string values for the Azure API
   subnet_network_policies = {
     for subnet in var.subnets :
