@@ -33,6 +33,7 @@ run "apply" {
         size                                     = 26
         delegation                               = "Microsoft.ContainerInstance/containerGroups"
         enable_private_endpoint_network_policies = true
+        nat_gateway_id                           = run.dependencies.nat_gateway_id
       },
       {
         name = "ServiceEndpointSubnet"
