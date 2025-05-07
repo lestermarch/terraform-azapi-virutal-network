@@ -188,3 +188,33 @@ module "network" {
 ```
 
 The above configuration will create a virtual network of size `/24`. The first `/26` subnet named `ApplicationSubnet` will be associated with the existing NAT Gateway, allowing traffic to egress to the Internet. The second `/26` subnet named `DataSubnet` will have the default configuration preventing data exfiltration.
+
+## 6. Network Security Group
+
+Subnets can optionally be associated to an existing Network Security Group to permit or deny specific inbound and outbound traffic flows:
+
+```terraform
+resource "azapi_resource" "app_subnet_nsg" { ... }
+resource "azapi_resource" "data_subnet_nsg" { ... }
+
+module "network" {
+  source = "..."
+
+  address_space = "10.99.0.0/24"
+
+  subnets = [
+    {
+      name                      = "ApplicationSubnet"
+      size                      = 26
+      network_security_group_id = azapi_resource.app_subnet_nsg.id
+    },
+    {
+      name                      = "DataSubnet"
+      size                      = 26
+      network_security_group_id = azapi_resource.data_subnet_nsg.id
+    }
+  ]
+}
+```
+
+The above configuration will create a virtual network of size `/24`. The two `/26` subnets `ApplicationSubnet` and `DataSubnet` will both be associated with their corresponding Network Security Group.
