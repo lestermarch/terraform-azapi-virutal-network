@@ -160,3 +160,31 @@ module "network" {
   ]
 }
 ```
+
+## 5. NAT Gateway
+
+Subnets provisioned with this module deny outbound Internet traffic (data exfiltration) by default. One option to enable data exfiltration is to link an existing NAT Gateway to a subnet:
+
+```terraform
+resource "azapi_resource" "nat_gateway" { ... }
+
+module "network" {
+  source = "..."
+
+  address_space = "10.99.0.0/24"
+
+  subnets = [
+    {
+      name           = "ApplicationSubnet"
+      size           = 26
+      nat_gateway_id = azapi_resource.nat_gateway.id
+    },
+    {
+      name = "DataSubnet"
+      size = 26
+    }
+  ]
+}
+```
+
+The above configuration will create a virtual network of size `/24`. The first `/26` subnet named `ApplicationSubnet` will be associated with the existing NAT Gateway, allowing traffic to egress to the Internet. The second `/26` subnet named `DataSubnet` will have the default configuration preventing data exfiltration.
