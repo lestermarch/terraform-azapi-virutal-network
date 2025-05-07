@@ -29,6 +29,7 @@ locals {
   network_security_group_name      = "nsg-${local.resource_suffix}"
   resource_group_name              = "rg-${local.resource_suffix}"
   resource_suffix                  = "${random_pet.resource_suffix.id}-${random_integer.resource_suffix.id}"
+  route_table_name                 = "rt-${local.resource_suffix}"
 }
 
 # Resource group
@@ -108,6 +109,31 @@ resource "azapi_resource" "network_security_group" {
             sourcePortRange          = "*"
             destinationAddressPrefix = "*"
             destinationPortRange     = "22"
+          }
+        }
+      ]
+    }
+  }
+}
+
+# Route Table
+resource "azapi_resource" "route_table" {
+  type = "Microsoft.Network/routeTables@2024-05-01"
+
+  name      = local.route_table_name
+  location  = var.location
+  parent_id = azapi_resource.resource_group.id
+
+  body = {
+    properties = {
+      routes = [
+        {
+          name = "AzureFirewallDefaultRoute"
+
+          properties = {
+            addressPrefix    = "0.0.0.0/0"
+            nextHopType      = "VirtualAppliance"
+            nextHopIpAddress = "10.99.0.4"
           }
         }
       ]
