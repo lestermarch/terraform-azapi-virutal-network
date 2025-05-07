@@ -29,6 +29,11 @@ variables {
         "Microsoft.KeyVault",
         "Microsoft.Storage"
       ]
+    },
+    {
+      name           = "RouteAllSubnet"
+      size           = 26
+      route_table_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-mock/providers/Microsoft.Network/routeTables/rt-mock"
     }
   ]
 }
