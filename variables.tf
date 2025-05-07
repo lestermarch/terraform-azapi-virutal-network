@@ -38,9 +38,9 @@ variable "subnets" {
       size = 26
     },
     {
-      name           = "DelegatedSubnet"
-      size           = 26
-      delegation     = "Microsoft.ContainerInstance/containerGroups"
+      name       = "DelegatedSubnet"
+      size       = 26
+      delegation = "Microsoft.ContainerInstance/containerGroups"
     },
     {
       name = "ServiceEndpointSubnet"
