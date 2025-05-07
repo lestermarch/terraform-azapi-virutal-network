@@ -43,6 +43,14 @@ locals {
     }
   }
 
+  # Create a data structure for subnet network security group configuration as required by the Azure API
+  subnet_network_security_group = {
+    for subnet in var.subnets :
+    subnet.name => {
+      id = subnet.network_security_group_id
+    } if subnet.network_security_group_id != null
+  }
+
   # Create a data structure for service endpoints configuration as required by the Azure API
   subnet_service_endpoints = {
     for subnet in var.subnets :

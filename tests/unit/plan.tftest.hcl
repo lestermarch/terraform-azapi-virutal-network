@@ -19,6 +19,7 @@ variables {
       delegation                               = "Microsoft.ContainerInstance/containerGroups"
       enable_private_endpoint_network_policies = true
       nat_gateway_id                           = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-mock/providers/Microsoft.Network/natGateways/ng-mock"
+      network_security_group_id                = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-mock/providers/Microsoft.Network/networkSecurityGroups/nsg-mock"
     },
     {
       name = "ServiceEndpointSubnet"
@@ -141,6 +142,12 @@ run "plan" {
   assert {
     condition     = azapi_resource.subnet["DelegatedSubnet"].body.properties.natGateway.id == "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-mock/providers/Microsoft.Network/natGateways/ng-mock"
     error_message = "The second subnet should have a NAT gateway ID of \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-mock/providers/Microsoft.Network/natGateways/ng-mock\"."
+  }
+
+  # Virtual Network: Subnets: DelegatedSubnet Network Security Group ID (Internal Logic)
+  assert {
+    condition     = azapi_resource.subnet["DelegatedSubnet"].body.properties.networkSecurityGroup.id == "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-mock/providers/Microsoft.Network/networkSecurityGroups/nsg-mock"
+    error_message = "The second subnet should have a network security group ID of \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-mock/providers/Microsoft.Network/networkSecurityGroups/nsg-mock\"."
   }
 
   # Virtual Network: Subnets: DelegatedSubnet Private Endpoint Network Policies (Internal Logic)
