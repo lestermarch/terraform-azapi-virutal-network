@@ -2,6 +2,18 @@
 
 A Terraform module for deploying an Azure Virtual Network and subnets using the AzAPI provider.
 
+## Design Decisions
+
+This module aims to simplify provisioning of an Azure Virtual Network and subnets and is opinionated in its implementation. Below are some notable points to consider:
+
+1. Subnet default outbound access is disabled by default. Additional configuraiton is required for subnets where data exfiltration (direct egress traffic to the Internet) is desirable. The `subnets` input supports associating an existing NAT Gateway or Route Table to individual subnets to enable this functionality if required. See [default outbound access in Azure](https://learn.microsoft.com/en-us/azure/virtual-network/ip-services/default-outbound-access) for more information.
+
+2. Subnets are provisioned dynamically based on the address space of the virtual network, specified subnet size, and order provided as part of the `subnets` input. In this way, only the size of a subnet needs to be provided, not the specific address range. The cumulative size of all subnets must fit within the total address space. Those unfamiliar with subnetting might want to refer to a [visual subnet calculator](https://www.davidc.net/sites/default/subnets/subnets.html).
+
+3. While the Azure API for subnets supports in-line definitions for Network Security Groups and Route Tables, this module requires that those resources are provisioned outside of the module and passed into the subnet definition via their resource ID.
+
+4. Some subnet attributes, such as IP allocations, IPAM pool prefix allocations, and service endpoint policies are not implemented due to their uncommon usage.
+
 ## Usage
 
 See [usage examples](./docs/usage-examples.md) or [inputs](#inputs) for example module configuration.
