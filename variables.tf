@@ -63,6 +63,7 @@ variable "subnets" {
     enable_private_link_service_network_policies = optional(bool, true)
     nat_gateway_id                               = optional(string)
     network_security_group_id                    = optional(string)
+    route_table_id                               = optional(string)
     service_endpoints                            = optional(list(string), [])
   }))
 }

@@ -51,6 +51,14 @@ locals {
     } if subnet.network_security_group_id != null
   }
 
+  # Create a data structure for subnet route table configuration as required by the Azure API
+  subnet_route_table = {
+    for subnet in var.subnets :
+    subnet.name => {
+      id = subnet.route_table_id
+    } if subnet.route_table_id != null
+  }
+
   # Create a data structure for service endpoints configuration as required by the Azure API
   subnet_service_endpoints = {
     for subnet in var.subnets :

@@ -44,6 +44,7 @@ resource "azapi_resource" "subnet" {
       networkSecurityGroup              = try(local.subnet_network_security_group[each.key], null)
       privateEndpointNetworkPolicies    = local.subnet_network_policies[each.key].private_endpoint
       privateLinkServiceNetworkPolicies = local.subnet_network_policies[each.key].private_link_service
+      routeTable                        = try(local.subnet_route_table[each.key], null)
       serviceEndpoints                  = local.subnet_service_endpoints[each.key]
     }
   }
