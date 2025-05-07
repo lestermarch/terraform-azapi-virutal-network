@@ -14,14 +14,14 @@ module "network" {
 
   subnets = [
     {
-      name = "BasicSubnet"
+      name = "AlphaSubnet"
       size = 26
     }
   ]
 }
 ```
 
-The above configuration will create a virtual network of size `/24` with a single `/26` subnet named `BasicSubnet`. The remaining address space in the virutal network will remain unused, effectively reserved for future expansion:
+The above configuration will create a virtual network of size `/24` with a single `/26` subnet named `AlphaSubnet`. The remaining address space in the virutal network will remain unused, effectively reserved for future expansion:
 
 <table cellspacing="0" cellpadding="2">
   <thead>
@@ -34,7 +34,7 @@ The above configuration will create a virtual network of size `/24` with a singl
   </thead>
   <tbody>
     <tr>
-      <td>BasicSubnet</td>
+      <td>AlphaSubnet</td>
       <td>10.99.0.0/26</td>
       <td>10.99.0.0 - 10.99.0.63</td>
       <td rowspan="1" colspan="1">/26</td>
@@ -72,7 +72,7 @@ module "network" {
       size = 26
     },
     {
-      name = null
+      name = null # Reserved
       size = 26
     },
     {
@@ -117,3 +117,46 @@ The above configuration will create a virtual network of size `/24`. The first `
     </tr>
   </tbody>
 </table>
+
+## 3. Subnet Delegation
+
+Subnets can optionally be delegated to an Azure service to allow that service to attach compute to the subnet:
+
+```terraform
+module "network" {
+  source = "..."
+
+  address_space = "10.99.0.0/24"
+
+  subnets = [
+    {
+      name       = "ContainerAppSubnet"
+      size       = 26
+      delegation = "Microsoft.ContainerInstance/containerGroups"
+    }
+  ]
+}
+```
+
+## 4. Service Endpoints
+
+Subnets can optionally have service endpoints enabled to enable PaaS resources of the service endpoint type to allow only traffic from the source subnet:
+
+```terraform
+module "network" {
+  source = "..."
+
+  address_space = "10.99.0.0/24"
+
+  subnets = [
+    {
+      name = "ApplicationSubnet"
+      size = 26
+      service_endpoints = [
+        "Microsoft.KeyVault",
+        "Microsoft.Storage"
+      ]
+    }
+  ]
+}
+```
