@@ -187,7 +187,7 @@ module "network" {
 }
 ```
 
-The above configuration will create a virtual network of size `/24`. The first `/26` subnet named `ApplicationSubnet` will be associated with the existing NAT Gateway, allowing traffic to egress to the Internet. The second `/26` subnet named `DataSubnet` will have the default configuration preventing data exfiltration.
+The above configuration will create a virtual network of size `/24`. The first `/26` subnet named `ApplicationSubnet` will be associated with the existing NAT Gateway, allowing traffic to egress to the Internet. The second `/26` subnet named `DataSubnet` will use the default configuration; preventing data exfiltration.
 
 ## 6. Network Security Group
 
@@ -218,3 +218,31 @@ module "network" {
 ```
 
 The above configuration will create a virtual network of size `/24`. The two `/26` subnets `ApplicationSubnet` and `DataSubnet` will both be associated with their corresponding Network Security Group.
+
+## 7. Route Table
+
+Subnets provisioned with this module deny outbound Internet traffic (data exfiltration) by default. One option to enable data exfiltration is to link an existing Route Table to a subnet, for example to a Network Virtual Appliance or Azure Firewall:
+
+```terraform
+resource "azapi_resource" "route_table" { ... }
+
+module "network" {
+  source = "..."
+
+  address_space = "10.99.0.0/24"
+
+  subnets = [
+    {
+      name           = "ApplicationSubnet"
+      size           = 26
+      route_table_id = azapi_resource.route_table.id
+    },
+    {
+      name = "DataSubnet"
+      size = 26
+    }
+  ]
+}
+```
+
+The above configuration will create a virtual network of size `/24`. The first `/26` subnet named `ApplicationSubnet` will be associated with the existing Route Table, forcing traffic to the specified next hop address. The second `/26` subnet named `DataSubnet` will use the default configuration; preventing data exfiltration.

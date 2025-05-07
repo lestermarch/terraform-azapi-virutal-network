@@ -44,6 +44,11 @@ run "apply" {
           "Microsoft.KeyVault",
           "Microsoft.Storage"
         ]
+      },
+      {
+        name           = "RouteAllSubnet"
+        size           = 26
+        route_table_id = run.dependencies.route_table_id
       }
     ]
   }
