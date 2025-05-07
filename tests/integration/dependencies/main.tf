@@ -26,6 +26,7 @@ locals {
   nat_gateway_idle_timeout_minutes = 4
   nat_gateway_name                 = "ng-${local.resource_suffix}"
   nat_gateway_public_ip_name       = "${local.nat_gateway_name}-pip"
+  network_security_group_name      = "nsg-${local.resource_suffix}"
   resource_group_name              = "rg-${local.resource_suffix}"
   resource_suffix                  = "${random_pet.resource_suffix.id}-${random_integer.resource_suffix.id}"
 }
@@ -80,6 +81,36 @@ resource "azapi_resource" "nat_gateway" {
 
     sku = {
       name = "Standard"
+    }
+  }
+}
+
+# Network Security Group
+resource "azapi_resource" "network_security_group" {
+  type = "Microsoft.Network/networkSecurityGroups@2024-05-01"
+
+  name      = local.network_security_group_name
+  location  = var.location
+  parent_id = azapi_resource.resource_group.id
+
+  body = {
+    properties = {
+      securityRules = [
+        {
+          name = "Allow-SSH"
+
+          properties = {
+            access                   = "Allow"
+            direction                = "Inbound"
+            priority                 = 100
+            protocol                 = "Tcp"
+            sourceAddressPrefix      = "*"
+            sourcePortRange          = "*"
+            destinationAddressPrefix = "*"
+            destinationPortRange     = "22"
+          }
+        }
+      ]
     }
   }
 }

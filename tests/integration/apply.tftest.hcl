@@ -34,6 +34,7 @@ run "apply" {
         delegation                               = "Microsoft.ContainerInstance/containerGroups"
         enable_private_endpoint_network_policies = true
         nat_gateway_id                           = run.dependencies.nat_gateway_id
+        network_security_group_id                = run.dependencies.network_security_group_id
       },
       {
         name = "ServiceEndpointSubnet"
