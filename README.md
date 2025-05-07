@@ -4,7 +4,7 @@ A Terraform module for deploying an Azure Virtual Network and subnets using the 
 
 ## Usage
 
-See [usage examples](./docs/usage-examples.md) for configuration examples.
+See [usage examples](./docs/usage-examples.md) or [inputs](#inputs) for example module configuration.
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
